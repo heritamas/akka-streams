@@ -45,18 +45,18 @@ object OperatorFusion extends App {
     x * 10
   }
 
-  //  simpleSource.via(complexFlow).via(complexFlow2).to(simpleSink).run()
+  // simpleSource.via(complexFlow).via(complexFlow2).to(simpleSink).run()
 
   // async boundary
-  //  simpleSource.via(complexFlow).async // runs on one actor
-  //    .via(complexFlow2).async  // runs on another actor
-  //    .to(simpleSink) // runs on a third actor
-  //    .run()
+//  simpleSource.via(complexFlow).async // runs on one actor
+//    .via(complexFlow2).async  // runs on another actor
+//    .to(simpleSink) // runs on a third actor
+//    .run()
 
   // ordering guarantees
   Source(1 to 3)
-    .map(element => { println(s"Flow A: $element"); element }).async
-    .map(element => { println(s"Flow B: $element"); element }).async
+    .map(element => { println(s"Flow A: $element"); element*10 }).async
+    .map(element => { println(s"Flow B: $element"); element+1 }).async
     .map(element => { println(s"Flow C: $element"); element }).async
     .runWith(Sink.ignore)
 
