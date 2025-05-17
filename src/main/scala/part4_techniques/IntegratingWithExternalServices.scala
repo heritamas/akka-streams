@@ -1,11 +1,13 @@
 package part4_techniques
 
-import java.util.Date
+import akka.NotUsed
 
+import java.util.Date
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Sink, Source}
+import akka.stream.scaladsl.{Flow, Sink, Source}
 import akka.util.Timeout
+import part4_techniques.IntegratingWithExternalServices.PagerEvent
 
 import scala.concurrent.Future
 
@@ -51,6 +53,9 @@ object IntegratingWithExternalServices extends App {
       engineerEmail
     }
   }
+
+  // it can be a flow also
+  val pagerEventFlow: Flow[PagerEvent, String, NotUsed] = Flow[PagerEvent].mapAsync(parallelism = 4)(event => PagerService.processEvent(event))
 
   val infraEvents = eventSource.filter(_.application == "AkkaInfra")
   val pagedEngineerEmails = infraEvents.mapAsync(parallelism = 1)(event => PagerService.processEvent(event))

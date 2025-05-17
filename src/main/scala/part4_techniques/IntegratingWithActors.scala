@@ -33,15 +33,16 @@ object IntegratingWithActors extends App {
   implicit val timeout = Timeout(2.seconds)
   val actorBasedFlow = Flow[Int].ask[Int](parallelism = 4)(simpleActor)
 
-  //  numbersSource.via(actorBasedFlow).to(Sink.ignore).run()
-  //  numbersSource.ask[Int](parallelism = 4)(simpleActor).to(Sink.ignore).run() // equivalent
+//  numbersSource.via(actorBasedFlow).to(Sink.ignore).run()
+//  numbersSource.ask[Int](parallelism = 4)(simpleActor).to(Sink.ignore).run() // equivalent
 
   /*
     Actor as a source
    */
   val actorPoweredSource = Source.actorRef[Int](bufferSize = 10, overflowStrategy = OverflowStrategy.dropHead)
-  val materializedActorRef = actorPoweredSource.to(Sink.foreach[Int](number => println(s"Actor powered flow got number: $number"))).run()
+  val materializedActorRef = actorPoweredSource.via(actorBasedFlow).to(Sink.foreach[Int](number => println(s"Actor powered flow got number: $number"))).run()
   materializedActorRef ! 10
+  materializedActorRef ! 20
   // terminating the stream
   materializedActorRef ! akka.actor.Status.Success("complete")
 
@@ -83,7 +84,7 @@ object IntegratingWithActors extends App {
     onFailureMessage = throwable => StreamFail(throwable) // optional
   )
 
-  Source(1 to 10).to(actorPoweredSink).run()
+//  Source(1 to 10).to(actorPoweredSink).run()
 
   //  Sink.actorRef() not recommended, unable to backpressure
 

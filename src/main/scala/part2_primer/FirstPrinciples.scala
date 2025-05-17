@@ -1,5 +1,6 @@
 package part2_primer
 
+import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
@@ -77,5 +78,7 @@ object FirstPrinciples extends App {
 
   nameSource.via(longNameFlow).via(limitFlow).to(nameSink).run()
   nameSource.filter(_.length > 5).take(2).runForeach(println)
+
+  //val isItaFlow: Source[String, NotUsed] = nameSource.filter(_.length > 5)
 
 }
