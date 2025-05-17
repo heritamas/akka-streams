@@ -111,24 +111,24 @@ object GraphCycles extends App {
     UniformFanInShape(extractLast.out, zip.in0, zip.in1)
   }
 
-//  val fiboGraph = RunnableGraph.fromGraph(
-//    GraphDSL.create() { implicit builder =>
-//      import GraphDSL.Implicits._
-//
-//      val source1 = builder.add(Source.single[BigInt](1))
-//      val source2 = builder.add(Source.single[BigInt](1))
-//      val sink = builder.add(Sink.foreach[BigInt](println))
-//      val fibo = builder.add(fibonacciGenerator)
-//
-//      source1 ~> fibo.in(0)
-//      source2 ~> fibo.in(1)
-//      fibo.out ~> sink
-//
-//      ClosedShape
-//    }
-//  )
-//
-//  fiboGraph.run()
+  val fiboGraph = RunnableGraph.fromGraph(
+    GraphDSL.create() { implicit builder =>
+      import GraphDSL.Implicits._
+
+      val source1 = builder.add(Source.single[BigInt](1))
+      val source2 = builder.add(Source.single[BigInt](1))
+      val sink = builder.add(Sink.foreach[BigInt](println))
+
+      val fibo = builder.add(fibonacciGenerator)
+      source1 ~> fibo.in(0)
+      source2 ~> fibo.in(1)
+      fibo.out ~> sink
+
+      ClosedShape
+    }
+  )
+
+  //fiboGraph.run()
 
   /**
     * ********************
