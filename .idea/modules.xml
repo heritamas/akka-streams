@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/akka-streams.iml" filepath="$PROJECT_DIR$/.idea/modules/akka-streams.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/akka-streams/akka-streams.akka-streams-build.iml" filepath="$PROJECT_DIR$/.idea/modules/akka-streams/akka-streams.akka-streams-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/akka-streams/akka-streams.akka-streams-build~1.iml" filepath="$PROJECT_DIR$/.idea/modules/akka-streams/akka-streams.akka-streams-build~1.iml" />
     </modules>
   </component>
 </project>

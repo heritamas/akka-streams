@@ -56,7 +56,7 @@ object GraphMaterializedValues extends App {
     val counterSink = Sink.fold[Int, B](0)((count, _) => count + 1)
 
     Flow.fromGraph(
-      GraphDSL.create(counterSink) { implicit builder => counterSinkShape =>
+      GraphDSL.createGraph(counterSink) { implicit builder => counterSinkShape =>
         import GraphDSL.Implicits._
 
         val broadcast = builder.add(Broadcast[B](2))
