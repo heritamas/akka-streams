@@ -92,7 +92,7 @@ object OpenGraphs extends App {
     } // static graph
   ) // component
 
-  firstSource.via(flowGraph).to(Sink.foreach(println)).run()
+  // firstSource.via(flowGraph).to(Sink.foreach(println)).run()
 
   /**
     Exercise: flow from a sink and a source?
@@ -105,7 +105,7 @@ object OpenGraphs extends App {
         val sourceShape = builder.add(source)
         val sinkShape = builder.add(sink)
 
-        // step 3
+        // step 3 - no connections, cheating!
         // step 4 - return the shape
         FlowShape(sinkShape.in, sourceShape.out)
       }
