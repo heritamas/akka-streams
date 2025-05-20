@@ -2,7 +2,7 @@ package part4_techniques
 
 import akka.actor.ActorSystem
 import akka.stream.Supervision.{Resume, Stop}
-import akka.stream.{ActorAttributes, ActorMaterializer}
+import akka.stream.{ActorAttributes, ActorMaterializer, RestartSettings}
 import akka.stream.scaladsl.{RestartSource, Sink, Source}
 
 import scala.concurrent.duration._
@@ -24,7 +24,7 @@ object FaultTolerance extends App {
     case _: RuntimeException => Int.MinValue
   } .log("gracefulSource")
     .to(Sink.ignore)
-    //    .run()
+    //.run()
 
   // 3 - recover with another stream
   faultySource.recoverWithRetries(3, {
@@ -32,16 +32,16 @@ object FaultTolerance extends App {
   })
     .log("recoverWithRetries")
     .to(Sink.ignore)
-    //    .run()
+    //.run()
 
 
 
   // 4 - backoff supervision
-  val restartSource = RestartSource.onFailuresWithBackoff(
+  val restartSource = RestartSource.withBackoff(RestartSettings(
     minBackoff = 1.seconds,
     maxBackoff = 30.seconds,
     randomFactor = 0.2,
-  )(() => {
+  ))(() => {
     val randomNumber = new Random().nextInt(20)
     Source(1 to 10).map(elem => if (elem == randomNumber) throw new RuntimeException else elem)
   })
@@ -49,7 +49,7 @@ object FaultTolerance extends App {
   restartSource
     .log("restartBackoff")
     .to(Sink.ignore)
-    // .run()
+    //.run()
 
 
   // 5 - supervision strategy

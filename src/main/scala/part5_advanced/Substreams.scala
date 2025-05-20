@@ -21,7 +21,7 @@ object Substreams extends App {
     println(s"I just received $word, count is $newCount")
     newCount
   }))
-    .run()
+  //.run()
 
   // 2 - merge substreams back
   val textSource = Source(List(
@@ -35,12 +35,12 @@ object Substreams extends App {
     .map(_.length) // do your expensive computation here
     .mergeSubstreams//WithParallelism(2)
     .toMat(Sink.reduce[Int](_ + _))(Keep.right)
-    .run()
+    //.run()
 
-  totalCharCountFuture.onComplete {
-    case Success(value) => println(s"Total char count: $value")
-    case Failure(ex) => println(s"Char computation failed: $ex")
-  }
+//  totalCharCountFuture.onComplete {
+//    case Success(value) => println(s"Total char count: $value")
+//    case Failure(ex) => println(s"Char computation failed: $ex")
+//  }
 
   // 3 - splitting a stream into substreams, when a condition is met
 
@@ -55,15 +55,15 @@ object Substreams extends App {
     .map(_ => 1)
     .mergeSubstreams
     .toMat(Sink.reduce[Int](_ + _))(Keep.right)
-    .run()
+    //.run()
 
-  anotherCharCountFuture.onComplete {
-    case Success(value) => println(s"Total char count alternative: $value")
-    case Failure(ex) => println(s"Char computation failed: $ex")
-  }
+//  anotherCharCountFuture.onComplete {
+//    case Success(value) => println(s"Total char count alternative: $value")
+//    case Failure(ex) => println(s"Char computation failed: $ex")
+//  }
 
   // 4 - flattening
   val simpleSource = Source(1 to 5)
-  simpleSource.flatMapConcat(x => Source(x to (3 * x))).runWith(Sink.foreach(println))
+  //simpleSource.flatMapConcat(x => Source(x to (3 * x))).runWith(Sink.foreach(println))
   simpleSource.flatMapMerge(2, x => Source(x to (3 * x))).runWith(Sink.foreach(println))
 }
