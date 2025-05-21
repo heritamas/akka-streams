@@ -57,8 +57,8 @@ object CustomGraphShapes extends App {
     GraphDSL.create() { implicit builder =>
       import GraphDSL.Implicits._
 
-      val slowSource = Source(Stream.from(1)).throttle(1, 1.second)
-      val fastSource = Source(Stream.from(1)).throttle(2, 1.second)
+      val slowSource = Source(LazyList.from(1)).throttle(1, 1.second)
+      val fastSource = Source(LazyList.from(1)).throttle(2, 1.second)
 
       def createSink(index: Int) = Sink.fold(0)((count: Int, element: Int) => {
         println(s"[sink $index] Received $element, current count is $count")
@@ -82,7 +82,7 @@ object CustomGraphShapes extends App {
     }
   )
 
-  //  balance2x3Graph.run()
+  //balance2x3Graph.run()
 
   /**
     * Exercise: generalize the balance component, make it M x N
@@ -109,8 +109,8 @@ object CustomGraphShapes extends App {
     GraphDSL.create() { implicit builder =>
       import GraphDSL.Implicits._
 
-      val slowSource = Source(Stream.from(1)).throttle(1, 1.second)
-      val fastSource = Source(Stream.from(1)).throttle(2, 1.second)
+      val slowSource = Source(LazyList.from(1)).throttle(1, 1.second)
+      val fastSource = Source(LazyList.from(1)).throttle(2, 1.second)
 
       def createSink(index: Int) = Sink.fold(0)((count: Int, element: Int) => {
         println(s"[sink $index] Received $element, current count is $count")

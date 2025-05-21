@@ -45,7 +45,7 @@ object CustomOperators extends App {
   }
 
   val randomGeneratorSource = Source.fromGraph(new RandomNumberGenerator(100))
-  //  randomGeneratorSource.runWith(Sink.foreach(println))
+  // randomGeneratorSource.runWith(Sink.foreach(println))
 
   // 2 - a custom sink that prints elements in batches of a given size
 
@@ -187,10 +187,10 @@ object CustomOperators extends App {
 
   val counterFlow = Flow.fromGraph(new CounterFlow[Int])
   val countFuture = Source(1 to 10)
-    // .map(x => if (x == 7) throw new RuntimeException("gotcha!") else x)
-    .viaMat(counterFlow)(Keep.right)
+    //.map(x => if (x == 7) throw new RuntimeException("gotcha!") else x)
+    .viaMat(counterFlow.log("flow"))(Keep.right)
     .to(Sink.foreach(x => if (x == 7) throw new RuntimeException("gotcha, sink!") else println(x)))
-    // .to(Sink.foreach[Int](println))
+    //.to(Sink.foreach[Int](println))
     .run()
 
   import system.dispatcher

@@ -19,7 +19,7 @@ object DynamicStreamHandling extends App {
   // #1: Kill Switch
 
   val killSwitchFlow = KillSwitches.single[Int]
-  val counter = Source(Stream.from(1)).throttle(1, 1.second).log("counter")
+  val counter = Source(LazyList.from(1)).throttle(1, 1.second).log("counter")
   val sink = Sink.ignore
 
     val killSwitch = counter
@@ -33,7 +33,7 @@ object DynamicStreamHandling extends App {
 
 
   // shared kill switch
-  val anotherCounter = Source(Stream.from(1)).throttle(2, 1.second).log("anotherCounter")
+  val anotherCounter = Source(LazyList.from(1)).throttle(2, 1.second).log("anotherCounter")
   val sharedKillSwitch = KillSwitches.shared("oneButtonToRuleThemAll")
 
 //  counter.via(sharedKillSwitch.flow).runWith(Sink.ignore)
