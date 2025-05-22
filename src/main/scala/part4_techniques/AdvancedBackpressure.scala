@@ -60,7 +60,7 @@ object AdvancedBackpressure extends App {
     Slow producers: extrapolate/expand
    */
   import scala.concurrent.duration._
-  val slowCounter = Source(Stream.from(1)).throttle(1, 1.second)
+  val slowCounter = Source(LazyList.from(1)).throttle(1, 1.second)
   val hungrySink = Sink.foreach[Int](println)
 
   val extrapolator = Flow[Int].extrapolate(element => Iterator.from(element))

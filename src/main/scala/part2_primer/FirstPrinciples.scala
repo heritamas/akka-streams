@@ -39,9 +39,9 @@ object FirstPrinciples extends App {
   val finiteSource = Source.single(1)
   val anotherFiniteSource = Source(List(1, 2, 3))
   val emptySource = Source.empty[Int]
-  val infiniteSource = Source(Stream.from(1)) // do not confuse an Akka stream with a "collection" Stream
+  val infiniteSource = Source(LazyList.from(1)) // do not confuse an Akka stream with a "collection" Stream
   import scala.concurrent.ExecutionContext.Implicits.global
-  val futureSource = Source.fromFuture(Future(42))
+  val futureSource = Source.future(Future(42))
 
   // sinks
   val theMostBoringSink = Sink.ignore

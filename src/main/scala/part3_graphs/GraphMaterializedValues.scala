@@ -25,7 +25,7 @@ object GraphMaterializedValues extends App {
 
   // step 1
   val complexWordSink = Sink.fromGraph(
-    GraphDSL.create(printer, counter)((printerMatValue, counterMatValue) => counterMatValue) { implicit builder => (printerShape, counterShape) =>
+    GraphDSL.createGraph(printer, counter)((printerMatValue, counterMatValue) => counterMatValue) { implicit builder => (printerShape, counterShape) =>
       import GraphDSL.Implicits._
 
       // step 2 - SHAPES

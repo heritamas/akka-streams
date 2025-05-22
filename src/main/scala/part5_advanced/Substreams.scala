@@ -16,6 +16,7 @@ object Substreams extends App {
   val wordsSource = Source(List("Akka", "is", "amazing", "learning", "substreams"))
   val groups = wordsSource.filter(_.nonEmpty).groupBy(30, _.toLowerCase().charAt(0))
 
+  // Sink run for each substream groupBy() created
   groups.to(Sink.fold(0)((count, word) => {
     val newCount = count + 1
     println(s"I just received $word, count is $newCount")
@@ -65,5 +66,5 @@ object Substreams extends App {
   // 4 - flattening
   val simpleSource = Source(1 to 5)
   //simpleSource.flatMapConcat(x => Source(x to (3 * x))).runWith(Sink.foreach(println))
-  simpleSource.flatMapMerge(2, x => Source(x to (3 * x))).runWith(Sink.foreach(println))
+  //simpleSource.flatMapMerge(2, x => Source(x to (3 * x))).runWith(Sink.foreach(println))
 }
